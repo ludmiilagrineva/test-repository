@@ -1,1 +1,1 @@
-# test Repository плохой коммит
+# test Repository
