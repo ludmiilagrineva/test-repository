@@ -16,7 +16,6 @@ def driver (request):
 
 def test_example(driver):
     driver.get("http://localhost/litecart/en/")
-    time.sleep(1)
     elements = driver.find_elements(By.CSS_SELECTOR, "li.product")
     count=len(elements)
 
