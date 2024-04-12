@@ -21,7 +21,8 @@ def test_example(driver):
     count=len(elements)
 
     for i in range(count):
-        elements[i].find_element(By.CSS_SELECTOR, ".sticker")
+        if len(elements[i].find_elements(By.CSS_SELECTOR, ".sticker")) != 1:
+            pytest.fail("Количество стикеров не равно одному")
 
 
 
