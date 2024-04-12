@@ -2,7 +2,6 @@ import time
 import pytest
 from selenium.webdriver.common.by import By
 from selenium import webdriver
-from selenium.webdriver.common.action_chains import ActionChains
 
 
 def is_element_present(driver, *args):
