@@ -5,17 +5,26 @@ from selenium import webdriver
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 import os
+import random
+import string
 
 def convert_to_absolute_path():
     relative_path = "Черная уточка.jpg"
     directory = os.getcwd()
     absolute_path = os.path.join(directory, relative_path)
     return absolute_path
+
+def  generateName():
+    name = ''.join(random.choice(string.ascii_lowercase)for i in range(5))
+    return "black duck "+name
+
+
 @pytest.fixture
 def driver (request):
     wd=webdriver.Chrome()
     request.addfinalizer(wd.quit)
     return wd
+
 
 def test_example(driver):
     driver.get("http://localhost/litecart/admin/")
@@ -27,7 +36,8 @@ def test_example(driver):
 
     # general
     driver.find_element(By.XPATH, "//input[@type=\"radio\"][1]").click()
-    driver.find_element(By.XPATH, "//input[@name=\"name[en]\"]").send_keys("black duck")
+    name=generateName()
+    driver.find_element(By.XPATH, "//input[@name=\"name[en]\"]").send_keys(name)
     driver.find_element(By.XPATH, "//input[@name=\"code\"]").send_keys("000000")
     driver.find_element(By.XPATH, "//input[@name=\"categories[]\"] [@data-name=\"Root\"]").click()
     driver.find_element(By.XPATH, "//input[@name=\"categories[]\"] [@data-name=\"Rubber Ducks\"]").click()
@@ -42,7 +52,7 @@ def test_example(driver):
     driver.find_element(By.XPATH, "//ul[@class=\"index\"]/li[2]").click()
     selectManufacturer = driver.find_element(By.XPATH, "//select[@name=\"manufacturer_id\"]")
     driver.execute_script("arguments[0].selectedIndex=1; arguments[0].dispatchEvent(new Event('change'))",selectManufacturer)
-    driver.find_element(By.XPATH, "//input[@name=\"short_description[en]\"]").send_keys("dark duck")
+    driver.find_element(By.XPATH, "//input[@name=\"short_description[en]\"]").send_keys("black duck")
     driver.find_element(By.XPATH, "//div[@class=\"trumbowyg-editor\"]").send_keys("black duck")
     driver.find_element(By.XPATH, "//input[@name=\"head_title[en]\"]").send_keys("black duck")
     driver.find_element(By.XPATH, "//input[@name=\"meta_description[en]\"]").send_keys("black duck")
@@ -63,7 +73,7 @@ def test_example(driver):
     isPresent = False
     ducksElements = driver.find_elements(By.XPATH, "//table[@class=\"dataTable\"]/tbody/tr/td/a")
     for i in range(1, len(ducksElements) - 1):
-        if ducksElements[i].text == "black duck":
+        if ducksElements[i].text == name:
             isPresent = True
     if not isPresent:
         pytest.fail("Товар не добавлен")
