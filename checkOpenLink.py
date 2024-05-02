@@ -25,6 +25,9 @@ def test_example(driver):
         linkElenemts[i].click()
         WebDriverWait(driver, 10).until(EC.number_of_windows_to_be(2))
         openedWindowHandle = driver.window_handles
-        driver.switch_to.window(openedWindowHandle[1])
+        for i in range(len(openedWindowHandle)):
+            if openedWindowHandle[i]!=mainWindowHandle:
+
+                driver.switch_to.window(openedWindowHandle[i])
         driver.close()
         driver.switch_to.window(mainWindowHandle)
